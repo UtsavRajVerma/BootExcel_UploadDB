@@ -52,9 +52,11 @@ public class ExcelController {
           System.out.println(consoleMessage);
        }
     }
-    message = "Please upload an excel file!";
-    ResponseEntity<ResponseMessage> consoleMessage= ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new ResponseMessage(message));
-    System.out.println(consoleMessage);
+    else{
+	message = "Please upload an excel file!";
+    	ResponseEntity<ResponseMessage> consoleMessage= ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new ResponseMessage(message));
+    	System.out.println(consoleMessage);
+    }
         
     ModelAndView mv=new ModelAndView();
     mv.addObject("file",file);
