@@ -25,59 +25,62 @@ import com.example.excelBoot.service.ExcelService;
 
 @CrossOrigin("http://localhost:6326")
 @Controller
-@RequestMapping("/api/excel")
 public class ExcelController {
 
   @Autowired
   private ExcelService fileService;
-
-  @PostMapping("/upload")
-  public ResponseEntity<ResponseMessage> uploadFile(@RequestParam(value="file", required=true) MultipartFile file) {
-    String message = "";
-
-    if (ExcelHelper.hasExcelFormat(file)) {
-      try {
-        fileService.save(file);
-
-        message = "Uploaded the file successfully: " + file.getOriginalFilename();
-        return ResponseEntity.status(HttpStatus.OK).body(new ResponseMessage(message));
-      } catch (Exception e) {
-        message = "Could not upload the file: " + file.getOriginalFilename() + "!";
-        return ResponseEntity.status(HttpStatus.EXPECTATION_FAILED).body(new ResponseMessage(message));
-      }
-    }
-    message = "Please upload an excel file!";
-    return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new ResponseMessage(message));
+  
+  @RequestMapping("home")
+  public String home() {
+	  return "home";
   }
   
-//  @PostMapping(value="/upload",consumes=MediaType.MULTIPART_FORM_DATA_VALUE)
-//  public ModelAndView uploadFile(@RequestParam("file") MultipartFile file) {
-//    String message = "";
-//
-////    if (ExcelHelper.hasExcelFormat(file)) {
-////      try {
-//        fileService.save(file);
-//
-////        message = "Uploaded the file successfully: " + file.getOriginalFilename();
-////        return ResponseEntity.status(HttpStatus.OK).body(new ResponseMessage(message));
-//        
-//        ModelAndView mv=new ModelAndView();
-//    	mv.addObject("file",file);
-//    	mv.setViewName("success");
-//    	return mv;
-////        
-////       return "success";
-//        
-////        return "home";
-////      } catch (Exception e) {
-////        message = "Could not upload the file: " + file.getOriginalFilename() + "!";
-////        return ResponseEntity.status(HttpStatus.EXPECTATION_FAILED).body(new ResponseMessage(message));
-////      }
-////    }
-////    message = "Please upload an excel file!";
-////    return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new ResponseMessage(message));
-//  }
+  @RequestMapping(value="/success",consumes=MediaType.MULTIPART_FORM_DATA_VALUE)
+  public ModelAndView uploadFile(@RequestParam(value="file", required=true) MultipartFile file) {
+    String message = "";
+        
+    if (ExcelHelper.hasExcelFormat(file)) {
+     try {
+       fileService.save(file);
+        
+	       message = "Uploaded the file successfully: " + file.getOriginalFilename();
+	       ResponseEntity<ResponseMessage> consoleMessage=ResponseEntity.status(HttpStatus.OK).body(new ResponseMessage(message));
+	       System.out.println(consoleMessage);
+         } catch (Exception e) {
+          message = "Could not upload the file: " + file.getOriginalFilename() + "!";
+          ResponseEntity<ResponseMessage> consoleMessage= ResponseEntity.status(HttpStatus.EXPECTATION_FAILED).body(new ResponseMessage(message));
+          System.out.println(consoleMessage);
+       }
+    }
+    message = "Please upload an excel file!";
+    ResponseEntity<ResponseMessage> consoleMessage= ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new ResponseMessage(message));
+    System.out.println(consoleMessage);
+        
+    ModelAndView mv=new ModelAndView();
+    mv.addObject("file",file);
+    mv.setViewName("success");
+    return mv;
+  }
 
+//@PostMapping("/upload")
+//public ResponseEntity<ResponseMessage> uploadFile(@RequestParam(value="file", required=true) MultipartFile file) {
+//  String message = "";
+//
+//  if (ExcelHelper.hasExcelFormat(file)) {
+//    try {
+//      fileService.save(file);
+//
+//      message = "Uploaded the file successfully: " + file.getOriginalFilename();
+//      return ResponseEntity.status(HttpStatus.OK).body(new ResponseMessage(message));
+//    } catch (Exception e) {
+//      message = "Could not upload the file: " + file.getOriginalFilename() + "!";
+//      return ResponseEntity.status(HttpStatus.EXPECTATION_FAILED).body(new ResponseMessage(message));
+//    }
+//  }
+//  message = "Please upload an excel file!";
+//  return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new ResponseMessage(message));
+//}
+  
   @GetMapping("/tutorials")
   public ResponseEntity<List<Tutorial>> getAllTutorials() {
     try {

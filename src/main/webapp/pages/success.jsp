@@ -9,7 +9,7 @@
 <body>
 	<h1>File added successfully!</h1>
     <br>   
-    <a href="http://lhttp://localhost:6326/api/excel/upload/home">
+    <a href="http://localhost:6326/home">
     <input type="submit" value="Upload Another"/></a>
 </body>
 </html>
